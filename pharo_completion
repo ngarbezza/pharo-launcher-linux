@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+
+import os, sys, ConfigParser
+
+CONFIG_FILE = os.path.expanduser('~/.pharo')
+
+def print_choices_for(arg, choices):
+    results = filter(lambda choice: choice.startswith(arg), choices)
+    if len(results) == 1: print results[0]
+    else: print reduce(lambda x, y: x + ' ' + str(y), results, '\n')
+
+def get_all_items(section):
+    config = ConfigParser.RawConfigParser()
+    config.read(CONFIG_FILE)
+    return map(lambda item: item[0], config.items(section))
+
+choices = {
+  'pharo'  : ['add', 'remove', 'list', 'launch', 'help'],
+  'add'    : ['image', 'vm'],
+  'launch' : get_all_items('vms'),
+  'remove' : ['image', 'vm'],
+  'image'  : get_all_items('images'),
+  'vm'     : get_all_items('vms')
+}
+
+try: print_choices_for(sys.argv[2], choices[sys.argv[3]])
+except KeyError:
+    if sys.argv[3] in get_all_items('vms'):
+        print_choices_for(sys.argv[2], get_all_items('images'))
