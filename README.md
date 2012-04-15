@@ -23,5 +23,5 @@ following line to the `.bashrc` file:
 
         complete -C <path_to_pharo_completion_file> -o default pharo
 
-    where <path_to_pharo_completion_file> is the path to the `pharo_completion`
+    where `<path_to_pharo_completion_file>` is the path to the `pharo_completion`
     file of this repository.
