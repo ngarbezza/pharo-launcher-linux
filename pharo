@@ -34,7 +34,7 @@ def add_entry(section, name, path):
     if not os.path.exists(path) or not os.path.isfile(path):
         print "The path '%s' does not exist or it isn't a file" % path
         exit()
-    config.set(section, name, '"%s"' % path)
+    config.set(section, name, '"%s"' % os.path.abspath(path))
     write_config(config)
     print "%s added pointing to %s" % (name, path)
 
