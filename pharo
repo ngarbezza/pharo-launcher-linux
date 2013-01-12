@@ -29,7 +29,7 @@ def add_entry(section, name, path):
     if config.has_option(section, name):
         print("Name %s is already associated with the path '%s'." % \
             (name, config.get(section, name)))
-        choice = raw_input("Do you want to replace it (y)/n: ")
+        choice = input("Do you want to replace it (y)/n: ")
         if choice in ['n', 'N', 'No', 'no', 'NO']: exit()
     if not os.path.exists(path) or not os.path.isfile(path):
         print("The path '%s' does not exist or it isn't a file" % path)
@@ -121,7 +121,7 @@ def create_config():
     return config
 
 def write_config(config):
-    with open(CONFIG_FILE, 'wb') as f: config.write(f)
+    with open(CONFIG_FILE, 'w') as f: config.write(f)
 
 def print_missing_argument_msg(cmd):
     print("Missing argument to " + cmd + " command. Type 'pharo help' " \
@@ -135,7 +135,7 @@ def check_sections():
 
 def check_config_file():
     if not os.path.exists(CONFIG_FILE):
-        with open(CONFIG_FILE, 'wb') as f: pass
+        with open(CONFIG_FILE, 'w') as f: pass
 
 # ------------------------------- MAIN -------------------------------------- #
 
