@@ -1,18 +1,25 @@
 #!/usr/bin/env python3
 
-import os, sys, configparser, functools
+import os, sys, configparser
 
 CONFIG_FILE = os.path.expanduser('~/.pharo')
 
-def print_choices_for(arg, choices):
-    results = list(filter(lambda choice: choice.startswith(arg), choices))
-    if len(results) == 1: print(results[0])
-    else: print(functools.reduce(lambda x, y: x + ' ' + str(y), results, '\n'))
+def print_choices_for(typed, choices):
+    results = list(filter(lambda choice: choice.startswith(typed), choices))
+    if len(results) == 1:
+        print(results[0])
+    else:
+        complete_partially(typed, results)
+        print('\n' + ' '.join(results))
 
 def get_all_items(section):
     config = configparser.RawConfigParser()
     config.read(CONFIG_FILE)
     return map(lambda item: item[0], config.items(section))
+
+def complete_partially(typed, results):
+    cmd = os.path.commonprefix(results)
+    if len(cmd) > 1 and not cmd == typed: print(cmd)
 
 choices = {
   'pharo'  : ['add', 'remove', 'list', 'launch', 'help'],
