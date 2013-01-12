@@ -1,16 +1,16 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-import os, sys, ConfigParser
+import os, sys, configparser, functools
 
 CONFIG_FILE = os.path.expanduser('~/.pharo')
 
 def print_choices_for(arg, choices):
-    results = filter(lambda choice: choice.startswith(arg), choices)
-    if len(results) == 1: print results[0]
-    else: print reduce(lambda x, y: x + ' ' + str(y), results, '\n')
+    results = list(filter(lambda choice: choice.startswith(arg), choices))
+    if len(results) == 1: print(results[0])
+    else: print(functools.reduce(lambda x, y: x + ' ' + str(y), results, '\n'))
 
 def get_all_items(section):
-    config = ConfigParser.RawConfigParser()
+    config = configparser.RawConfigParser()
     config.read(CONFIG_FILE)
     return map(lambda item: item[0], config.items(section))
 
