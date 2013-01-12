@@ -1,15 +1,15 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import os, sys
-from ConfigParser import RawConfigParser
+from configparser import RawConfigParser
 
 # ----------------------------- CONSTANTS ----------------------------------- #
 
-CONFIG_FILE = os.path.expanduser('~/.pharo')
+CONFIG_FILE    = os.path.expanduser('~/.pharo')
 IMAGES_SECTION = 'images'
 VMS_SECTION    = 'vms'
-IMG_CMD = 'image'
-VM_CMD  = 'vm'
+IMG_CMD        = 'image'
+VM_CMD         = 'vm'
 
 # ---------------------------- add COMMAND ---------------------------------- #
 
@@ -18,7 +18,7 @@ def add():
         arg = sys.argv[2]
         if arg == IMG_CMD: add_entry(IMAGES_SECTION, sys.argv[3], sys.argv[4])
         elif arg == VM_CMD: add_entry(VMS_SECTION, sys.argv[3], sys.argv[4])
-        else: print "Wrong argument. Enter '%s' or '%s'" % (IMG_CMD, VM_CMD)
+        else: print("Wrong argument. Enter '%s' or '%s'" % (IMG_CMD, VM_CMD))
     except IndexError:
         print_missing_argument_msg('add')
 
@@ -27,16 +27,16 @@ def add_entry(section, name, path):
     check_sections()
     config = create_config()
     if config.has_option(section, name):
-        print "Name %s is already associated with the path '%s'." % \
-            (name, config.get(section, name))
+        print("Name %s is already associated with the path '%s'." % \
+            (name, config.get(section, name)))
         choice = raw_input("Do you want to replace it (y)/n: ")
         if choice in ['n', 'N', 'No', 'no', 'NO']: exit()
     if not os.path.exists(path) or not os.path.isfile(path):
-        print "The path '%s' does not exist or it isn't a file" % path
+        print("The path '%s' does not exist or it isn't a file" % path)
         exit()
     config.set(section, name, '"%s"' % os.path.abspath(path))
     write_config(config)
-    print "%s added pointing to %s" % (name, path)
+    print("%s added pointing to %s" % (name, path))
 
 # -------------------------- launch COMMAND --------------------------------- #
 
@@ -50,7 +50,7 @@ def launch():
         if config.has_option(IMAGES_SECTION, img):
             img = config.get(IMAGES_SECTION, img)
         command = "%s %s &" % (vm, img)
-        print "Executing '%s'..." % command
+        print("Executing '%s'..." % command)
         os.system(command)
     except IndexError:
         print_missing_argument_msg('launch')
@@ -62,7 +62,7 @@ def remove():
         arg = sys.argv[2]
         if arg == IMG_CMD: remove_entry(IMAGES_SECTION, sys.argv[3])
         elif arg == VM_CMD: remove_entry(VMS_SECTION, sys.argv[3])
-        else: print "Wrong argument. Enter '%s' or '%s'" % (IMG_CMD, VM_CMD)
+        else: print("Wrong argument. Enter '%s' or '%s'" % (IMG_CMD, VM_CMD))
     except IndexError:
         print_missing_argument_msg('remove')
 
@@ -70,9 +70,9 @@ def remove_entry(section, name):
     config = create_config()
     if config.has_option(section, name):
         config.remove_option(section, name)
-        print "Name %s removed successfully" % name
+        print("Name %s removed successfully" % name)
     else:
-        print "The name %s does not exist." % name
+        print("The name %s does not exist." % name)
     write_config(config)
 
 # --------------------------- list COMMAND ---------------------------------- #
@@ -82,7 +82,7 @@ def list(): os.system('cat '+ CONFIG_FILE)
 # ------------------------------- HELP -------------------------------------- #
 
 def show_help():
-    print """Pharo launcher for GNU/Linux.
+    print("""Pharo launcher for GNU/Linux.
     Usage: pharo <command> <arguments>
 
     Commands:
@@ -110,7 +110,7 @@ def show_help():
 
         help
             Show this screen.
-    """
+    """)
     exit()
 
 # ------------------------- OTHER FUNCTIONS --------------------------------- #
@@ -124,8 +124,8 @@ def write_config(config):
     with open(CONFIG_FILE, 'wb') as f: config.write(f)
 
 def print_missing_argument_msg(cmd):
-    print "Missing argument to " + cmd + " command. Type 'pharo help' " \
-            + "to see some examples of this command."
+    print("Missing argument to " + cmd + " command. Type 'pharo help' " \
+            + "to see some examples of this command.")
 
 def check_sections():
     config = create_config()
@@ -147,6 +147,6 @@ if __name__ == '__main__':
     elif cmd == 'remove': remove()
     elif cmd == 'list': list()
     elif cmd == 'help': show_help()
-    else: print "Unknown command. Type 'pharo help'" \
-        + " to get the list of available commands"
+    else: print("Unknown command. Type 'pharo help'" \
+        + " to get the list of available commands")
     exit()
