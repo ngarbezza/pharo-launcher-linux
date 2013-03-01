@@ -44,12 +44,13 @@ def launch():
     try:
         vm = sys.argv[2]
         img = sys.argv[3]
+        args = ' '.join(sys.argv[4:])
         config = create_config()
         if config.has_option(VMS_SECTION, vm):
             vm = config.get(VMS_SECTION, vm)
         if config.has_option(IMAGES_SECTION, img):
             img = config.get(IMAGES_SECTION, img)
-        command = "%s %s &" % (vm, img)
+        command = "%s %s %s &" % (vm, img, args)
         print("Executing '%s'..." % command)
         os.system(command)
     except IndexError:
