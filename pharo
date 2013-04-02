@@ -50,7 +50,7 @@ def launch():
             vm = config.get(VMS_SECTION, vm)
         if config.has_option(IMAGES_SECTION, img):
             img = config.get(IMAGES_SECTION, img)
-        command = "%s %s %s &" % (vm, img, args)
+        command = "%s %s %s > /dev/null 2>&1 &" % (vm, img, args)
         print("Executing '%s'..." % command)
         os.system(command)
     except IndexError:
